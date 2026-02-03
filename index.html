@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Be My Valentine 💖</title>
+<title>Valentine 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
@@ -10,66 +10,76 @@
 <style>
 html,body{
   margin:0;
-  padding:0;
   height:100%;
   overflow:hidden;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
   background:linear-gradient(180deg,#ffb3d9,#ffd6e8);
-  color:#333;
 }
 
-/* ===== FLOATING HEARTS ===== */
-.heart-bg{
+/* ===== FLOATING HEARTS BACKGROUND ===== */
+.bg-heart{
   position:fixed;
   bottom:-40px;
   font-size:22px;
-  opacity:.65;
+  opacity:.6;
   animation:floatUp linear infinite;
   pointer-events:none;
   z-index:1;
 }
 @keyframes floatUp{
-  from{ transform:translateY(0) scale(.9); }
   to{ transform:translateY(-120vh) scale(1.4); opacity:0; }
+}
+
+/* ===== CURSOR HEARTS ===== */
+.cursor-heart{
+  position:fixed;
+  font-size:14px;
+  pointer-events:none;
+  animation:cursorFloat 1s ease-out forwards;
+  z-index:5;
+}
+@keyframes cursorFloat{
+  to{ transform:translateY(-40px); opacity:0; }
 }
 
 /* ===== CENTER CARD ===== */
 .container{
-  height:100%;
+  position:absolute;
+  inset:0;
   display:flex;
-  align-items:center;
   justify-content:center;
-  transition:opacity 1s ease;
+  align-items:center;
   z-index:2;
 }
 
 .card{
-  background:rgba(255,255,255,0.92);
-  padding:56px;
+  background:rgba(255,255,255,.94);
+  padding:54px;
   width:min(92vw,480px);
-  border-radius:40px;
+  border-radius:36px;
   text-align:center;
   box-shadow:0 50px 140px rgba(0,0,0,.25);
+  transition:opacity .6s ease;
 }
 
-h1{
-  font-size:34px;
-  margin-bottom:14px;
-  color:#ff3f81;
-}
-
+h1{ color:#ff3f81; margin-bottom:10px; }
 p{ font-size:20px; }
 
 /* ===== BUTTONS ===== */
-.buttons{ position:relative; height:90px; }
+.buttons{
+  position:relative;
+  height:90px;
+  margin-top:24px;
+}
 
 button{
+  position:absolute;
   padding:18px 44px;
   font-size:18px;
   border-radius:999px;
   border:none;
   cursor:pointer;
-  position:absolute;
+  transition:transform .4s ease, opacity .4s ease;
 }
 
 #yes{
@@ -86,70 +96,76 @@ button{
   color:#ff3f81;
 }
 
-/* ===== NOTIFICATION ===== */
-#notif{
+/* ===== BIN ===== */
+#bin{
   position:fixed;
-  top:20px;
-  right:20px;
-  background:#ff3f81;
-  color:white;
-  font-size:15px;
-  padding:10px 18px;
-  border-radius:999px;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
-  animation:pulse 1.6s infinite;
-  cursor:pointer;
-  z-index:10;
+  bottom:24px;
+  right:24px;
+  font-size:42px;
+  opacity:0;
+  transition:.4s;
+  z-index:6;
 }
-@keyframes pulse{
-  0%{ transform:scale(1); box-shadow:0 0 0 rgba(255,63,129,.6); }
-  70%{ transform:scale(1.05); box-shadow:0 0 20px rgba(255,63,129,.6); }
-  100%{ transform:scale(1); }
+#bin.show{ opacity:1; }
+
+/* ===== DISCLAIMER ===== */
+#cheat{
+  position:fixed;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  padding:10px 20px;
+  border-radius:12px;
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  opacity:0;
+  transition:.4s;
+  z-index:6;
 }
+#cheat.show{ opacity:1; }
 
 /* ===== ENVELOPE ===== */
 .envelope-wrap{
-  position:relative;
-  width:min(92vw,520px);
-  height:360px;
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.6s;
+  z-index:4;
+}
+
+.envelope-wrap.show{
+  opacity:1;
+  pointer-events:auto;
 }
 
 .envelope{
-  position:relative;
-  width:100%;
-  height:100%;
+  width:min(92vw,520px);
+  height:340px;
   background:#fff;
   border-radius:26px;
-  box-shadow:0 40px 120px rgba(0,0,0,.3);
+  position:relative;
   overflow:hidden;
-  cursor:pointer;
+  box-shadow:0 40px 120px rgba(0,0,0,.3);
 }
 
 .flap{
   position:absolute;
   top:0;
-  left:0;
   width:100%;
   height:50%;
   background:#ffe1ec;
   transform-origin:top;
-  transition:transform .9s ease;
+  transition:.8s ease;
   z-index:3;
 }
-.flap span{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:34px;
-  animation:heartbeat 1.4s infinite;
-}
-@keyframes heartbeat{
-  0%,100%{ transform:translate(-50%,-50%) scale(1); }
-  50%{ transform:translate(-50%,-50%) scale(1.2); }
-}
 
-/* ===== LETTER ===== */
 .letter{
   position:absolute;
   left:6%;
@@ -158,10 +174,9 @@ button{
   height:70%;
   background:#fff;
   border-radius:18px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
-  padding:28px;
-  transform:translateY(100%);
-  transition:transform .9s ease;
+  padding:26px;
+  transform:translateY(120%);
+  transition:.8s ease;
   z-index:2;
 }
 
@@ -174,43 +189,15 @@ button{
   font-size:28px;
   color:#ff3f81;
 }
-
-/* ===== BIN + CHEAT ===== */
-#bin{
-  position:fixed;
-  bottom:24px;
-  right:24px;
-  font-size:42px;
-  opacity:0;
-  transition:.4s;
-}
-#bin.show{ opacity:1; }
-
-#cheat{
-  position:fixed;
-  bottom:90px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#ff3f81;
-  color:white;
-  padding:14px 26px;
-  border-radius:999px;
-  font-size:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-  animation:pulse 1.2s infinite;
-  opacity:0;
-}
-#cheat.show{ opacity:1; }
 </style>
 </head>
 
 <body>
 
-<div id="notif">1 New Letter 💌</div>
 <div id="bin">🗑️</div>
-<div id="cheat">DON’T CHEAT 😤</div>
+<div id="cheat">Don’t cheat 😤</div>
 
-<div class="container" id="container">
+<div class="container" id="card">
   <div class="card">
     <h1>HEYYYY HEERIKA JAIN 💖</h1>
     <p>Will you be my Valentine?</p>
@@ -221,11 +208,21 @@ button{
   </div>
 </div>
 
+<div class="envelope-wrap" id="envWrap">
+  <div class="envelope" id="env">
+    <div class="flap"></div>
+    <div class="letter">
+      <p>You’re the kind of magic people write poems about ✨</p>
+      <div class="signature">– KS</div>
+    </div>
+  </div>
+</div>
+
 <script>
-// HEARTS
+/* BACKGROUND HEARTS */
 setInterval(()=>{
   const h=document.createElement("div");
-  h.className="heart-bg";
+  h.className="bg-heart";
   h.textContent="❤️";
   h.style.left=Math.random()*100+"vw";
   h.style.animationDuration=6+Math.random()*8+"s";
@@ -233,66 +230,53 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),15000);
 },260);
 
-// LETTER TEXT
-function getLetter(){
-  const lines=[
-    "What kind of pie is Heerika? A cutie-pie.",
-    "If cute were a crime, Heerika would be life sentence.",
-    "Warning: Heerika causes uncontrollable smiling.",
-    "Some people are sunshine. Heerika is the whole sky."
-  ];
-  return lines[Math.floor(Math.random()*lines.length)];
-}
+/* CURSOR HEARTS (DESKTOP) */
+document.addEventListener("mousemove",e=>{
+  if(window.innerWidth<768) return;
+  const h=document.createElement("div");
+  h.className="cursor-heart";
+  h.textContent="💗";
+  h.style.left=e.clientX+"px";
+  h.style.top=e.clientY+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),1000);
+});
 
-// YES FLOW
-function openLetter(){
-  document.getElementById("container").style.opacity="0";
+/* YES FLOW */
+const yes=document.getElementById("yes");
+const card=document.getElementById("card");
+const envWrap=document.getElementById("envWrap");
+const env=document.getElementById("env");
 
+yes.onclick=()=>{
+  card.style.opacity="0";
   setTimeout(()=>{
-    document.body.innerHTML+=`
-    <div class="container">
-      <div class="envelope-wrap">
-        <div class="envelope open" id="env">
-          <div class="flap"><span>💌</span></div>
-          <div class="letter">
-            <p>${getLetter()}</p>
-            <div class="signature">– KS</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-    setTimeout(()=>{
-      document.getElementById("env").classList.remove("open");
-    },1500);
-
-    document.getElementById("env").onclick=()=>{
-      document.getElementById("env").classList.toggle("open");
-    };
+    card.style.display="none";
+    envWrap.classList.add("show");
+    setTimeout(()=>env.classList.add("open"),200);
   },600);
-}
+};
 
-document.getElementById("yes").onclick=openLetter;
-document.getElementById("notif").onclick=openLetter;
+env.onclick=()=>env.classList.toggle("open");
 
-// NO BUTTON
+/* NO FLOW */
 const no=document.getElementById("no");
 const bin=document.getElementById("bin");
 const cheat=document.getElementById("cheat");
 
-document.addEventListener("mousemove",e=>{
-  const r=no.getBoundingClientRect();
-  const dx=e.clientX-(r.left+r.width/2);
-  const dy=e.clientY-(r.top+r.height/2);
-  if(Math.hypot(dx,dy)<120){
-    no.style.transform=`translate(${-dx}px,${-dy}px)`;
-  }
-});
-
 no.onclick=()=>{
   bin.classList.add("show");
+  const b=bin.getBoundingClientRect();
+  const n=no.getBoundingClientRect();
+
+  const dx=b.left-n.left;
+  const dy=b.top-n.top;
+
+  no.style.transform=`translate(${dx}px,${dy}px) scale(.2)`;
+  no.style.opacity="0";
+
   cheat.classList.add("show");
-  setTimeout(()=>cheat.classList.remove("show"),3000);
+  setTimeout(()=>cheat.classList.remove("show"),2500);
 };
 </script>
 
