@@ -193,3 +193,9 @@ button{
 .letter-open .env-flap{
   transform:rotateX(180deg);
 }
+@media (hover:hover){
+  .card:hover{
+    transform:translateY(-8px) scale(1.01);
+    box-shadow:var(--depth-3);
+  }
+}
