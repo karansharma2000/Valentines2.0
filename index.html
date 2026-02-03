@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+  background:linear-gradient(180deg,#ffb3d9,#ffd6e8);
+}
+
+/* Floating hearts */
+.heart-bg{
+  position:fixed;
+  bottom:-40px;
+  opacity:.6;
+  animation:floatUp linear infinite;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  to{ transform:translateY(-120vh); opacity:0; }
+}
+
+/* Notification */
+.notification{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:white;
+  padding:14px 20px;
+  border-radius:999px;
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
+  font-weight:600;
+  cursor:pointer;
+  z-index:20;
+}
+
+/* Card */
+.container{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  background:rgba(255,255,255,.9);
+  padding:56px;
+  width:480px;
+  border-radius:40px;
+  text-align:center;
+  box-shadow:0 50px 140px rgba(0,0,0,.25);
+}
+
+/* Envelope */
+.envelope{
+  width:240px;
+  height:150px;
+  background:#ff3f81;
+  border-radius:14px;
+  margin:auto;
+  position:relative;
+  cursor:pointer;
+}
+.envelope::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#ff6fa5;
+  clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);
+}
+
+/* Letter */
+.letter{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  height:260px;
+  background:#fffdf7;
+  border-radius:12px;
+  padding:26px;
+  font-family:"Comic Sans MS","Bradley Hand",cursive;
+  transform:translateY(90px);
+  opacity:0;
+  transition:all 1s ease;
+}
+.envelope.open .letter{
+  transform:translateY(-200px);
+  opacity:1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="notification" onclick="showLetter()">💌 1 New Letter</div>
+
+<div class="container" id="container">
+  <div class="card">
+    <h1>HEYYYY HEERIKA JAIN 💖</h1>
+    <p>Will you be my Valentine?</p>
+    <div id="countdown"></div>
+    <button onclick="showLetter()">YESSSSS!! ❤️</button>
+  </div>
+</div>
+
+<script>
+// Hearts
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart-bg";
+  h.innerText="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=14+Math.random()*24+"px";
+  h.style.animationDuration=6+Math.random()*8+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),15000);
+},220);
+
+// Countdown
+const cd=document.getElementById("countdown");
+const V=new Date("Feb 14, 2026").getTime();
+setInterval(()=>{
+  cd.innerHTML=`⏳ ${Math.floor((V-Date.now())/86400000)} days to Valentine’s`;
+},1000);
+
+// Letters logic
+function getLetter(){
+  const today=new Date();
+  const d=today.getDate();
+  const m=today.getMonth()+1;
+
+  const week={
+    7:"🌹 Happy Rose Day — consider this letter your rose.",
+    8:"💍 Happy Propose Day — still choosing you.",
+    9:"🍫 Happy Chocolate Day — sweet, slightly addictive.",
+    10:"🧸 Happy Teddy Day — soft hugs reserved for you.",
+    11:"🤞 Happy Promise Day — I’m not going anywhere.",
+    12:"🤗 Happy Hug Day — imagine this is a long one.",
+    13:"💋 Happy Kiss Day — this line was written too close.",
+    14:"❤️ Happy Valentine’s Day — this was always us."
+  };
+
+  if(m===2 && week[d]) return week[d];
+
+  const normal=[
+    "I hope you know — this page refreshes, my choice doesn’t.",
+    "You casually became my favorite habit.",
+    "Somehow you’re my calm and my chaos.",
+    "I didn’t plan this. I planned *us*.",
+    "If this were a bug, I’d never fix it."
+  ];
+
+  return normal[today.getDate()%normal.length];
+}
+
+// Show letter
+function showLetter(){
+  document.getElementById("container").innerHTML=`
+    <div class="card">
+      <h2>One letter, just for you 💌</h2>
+      <div class="envelope" onclick="this.classList.add('open')">
+        <div class="letter">
+          <p>${getLetter()}</p>
+          <p style="margin-top:20px;font-size:14px">${cd.innerHTML}</p>
+          <p style="margin-top:16px">— Yours</p>
+        </div>
+      </div>
+      <p style="margin-top:18px;font-size:14px">(Tap the envelope)</p>
+    </div>`;
+}
+</script>
+
+</body>
+</html>
