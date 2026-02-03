@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Be My Valentine 💖</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
 html,body{
@@ -13,9 +15,10 @@ html,body{
   overflow:hidden;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
   background:linear-gradient(180deg,#ffb3d9,#ffd6e8);
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* Floating hearts */
+/* FLOATING HEARTS */
 .heart-bg{
   position:fixed;
   bottom:-40px;
@@ -24,157 +27,311 @@ html,body{
   pointer-events:none;
 }
 @keyframes floatUp{
-  to{ transform:translateY(-120vh); opacity:0; }
+  to{ transform:translateY(-120vh) scale(1.3); opacity:0; }
 }
 
-/* Notification */
-.notification{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:white;
-  padding:14px 20px;
-  border-radius:999px;
-  box-shadow:0 12px 30px rgba(0,0,0,.2);
-  font-weight:600;
-  cursor:pointer;
-  z-index:20;
+/* CURSOR HEARTS (DESKTOP ONLY) */
+@media (hover:hover){
+  .cursor-heart{
+    position:fixed;
+    pointer-events:none;
+    animation:trail 1s forwards;
+  }
+  @keyframes trail{
+    to{ transform:translateY(-40px) scale(1.2); opacity:0; }
+  }
 }
 
-/* Card */
+/* CENTER CARD */
 .container{
   height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-}
-.card{
-  background:rgba(255,255,255,.9);
-  padding:56px;
-  width:480px;
-  border-radius:40px;
-  text-align:center;
-  box-shadow:0 50px 140px rgba(0,0,0,.25);
+  padding:16px;
 }
 
-/* Envelope */
-.envelope{
-  width:240px;
-  height:150px;
-  background:#ff3f81;
-  border-radius:14px;
-  margin:auto;
-  position:relative;
-  cursor:pointer;
+.card{
+  background:rgba(255,255,255,0.95);
+  padding:40px 32px;
+  width:100%;
+  max-width:420px;
+  border-radius:32px;
+  text-align:center;
+  box-shadow:0 40px 120px rgba(0,0,0,.25);
 }
-.envelope::before{
-  content:"";
+
+h1{ color:#ff3f81; font-size:26px; }
+
+p{ font-size:17px; }
+
+/* BUTTONS */
+.buttons{
+  position:relative;
+  height:90px;
+  margin-top:12px;
+}
+
+button{
+  padding:16px 32px;
+  font-size:16px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  position:absolute;
+}
+
+#yes{
+  left:0;
+  background:#ff3f81;
+  color:white;
+}
+
+#no{
+  right:0;
+  background:white;
+  border:2px solid #ff3f81;
+  color:#ff3f81;
+}
+
+/* NOTIFICATION */
+#notif{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:#ff3f81;
+  color:white;
+  padding:14px 20px;
+  border-radius:16px;
+  box-shadow:0 14px 32px rgba(0,0,0,.3);
+  font-size:15px;
+  cursor:pointer;
+  animation:shake 1.2s infinite;
+  z-index:50;
+}
+@keyframes shake{
+  0%,100%{ transform:translateX(0); }
+  25%{ transform:translateX(-2px); }
+  50%{ transform:translateX(2px); }
+}
+
+/* ENVELOPE */
+.envelope-wrapper{
+  width:100%;
+  max-width:440px;
+  aspect-ratio:3/2;
+  position:relative;
+}
+
+.envelope{
+  width:100%;
+  height:100%;
+  background:#ff9ecb;
+  border-radius:20px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  overflow:hidden;
+  position:relative;
+}
+
+/* FLAP */
+.envelope-flap{
   position:absolute;
   inset:0;
-  background:#ff6fa5;
-  clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);
+  background:#ff7fb8;
+  clip-path:polygon(0 0,100% 0,50% 58%);
+  transform-origin:50% 0%;
+  transition:transform 1s ease;
+  z-index:6;
+  display:flex;
+  justify-content:center;
 }
 
-/* Letter */
-.letter{
+.envelope-flap span{
   position:absolute;
-  top:10px;
-  left:10px;
-  right:10px;
-  height:260px;
-  background:#fffdf7;
-  border-radius:12px;
-  padding:26px;
-  font-family:"Comic Sans MS","Bradley Hand",cursive;
-  transform:translateY(90px);
-  opacity:0;
-  transition:all 1s ease;
+  top:16px;
+  font-size:36px;
+  animation:heartbeat 1.8s infinite;
 }
-.envelope.open .letter{
-  transform:translateY(-200px);
-  opacity:1;
+
+@keyframes heartbeat{
+  0%{ transform:scale(1); }
+  14%{ transform:scale(1.15); }
+  28%{ transform:scale(1); }
+}
+
+/* PAPER */
+.paper{
+  position:absolute;
+  bottom:-120%;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+  transition:bottom 1.2s ease;
+  cursor:pointer;
+  z-index:4;
+  font-size:16px;
+}
+
+.paper.open{ bottom:18px; }
+
+.signature{
+  font-family:'Great Vibes',cursive;
+  font-size:28px;
+  margin-top:20px;
+}
+
+/* BIN */
+#bin{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  font-size:56px;
+  opacity:0;
+  transition:opacity .4s;
+}
+
+#cheat-text{
+  position:fixed;
+  bottom:14px;
+  width:100%;
+  text-align:center;
+  font-size:16px;
+  opacity:0;
+  transition:opacity .5s;
 }
 </style>
 </head>
 
 <body>
 
-<div class="notification" onclick="showLetter()">💌 1 New Letter</div>
+<div id="notif">💌 1 New Letter</div>
+<div id="bin">🗑️</div>
+<div id="cheat-text">don’t cheat 😤</div>
 
 <div class="container" id="container">
   <div class="card">
     <h1>HEYYYY HEERIKA JAIN 💖</h1>
     <p>Will you be my Valentine?</p>
     <div id="countdown"></div>
-    <button onclick="showLetter()">YESSSSS!! ❤️</button>
+    <div class="buttons">
+      <button id="yes">YESSSSS!! ❤️</button>
+      <button id="no">No, I suck 😔</button>
+    </div>
   </div>
 </div>
 
 <script>
-// Hearts
+const vibrate=p=>navigator.vibrate && navigator.vibrate(p);
+
+// HEARTS
 setInterval(()=>{
   const h=document.createElement("div");
   h.className="heart-bg";
   h.innerText="❤️";
   h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=14+Math.random()*24+"px";
+  h.style.fontSize=14+Math.random()*22+"px";
   h.style.animationDuration=6+Math.random()*8+"s";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),15000);
-},220);
+},260);
 
-// Countdown
+// DESKTOP CURSOR HEARTS
+if(window.matchMedia("(hover:hover)").matches){
+  document.addEventListener("mousemove",e=>{
+    const h=document.createElement("div");
+    h.className="cursor-heart";
+    h.innerText="❤️";
+    h.style.left=e.clientX+"px";
+    h.style.top=e.clientY+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),900);
+  });
+}
+
+// RUNAWAY NO
+const no=document.getElementById("no");
+document.addEventListener("mousemove",e=>{
+  const r=no.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
+  if(Math.hypot(dx,dy)<120){
+    no.style.transform=`translate(${-dx}px,${-dy}px)`;
+  }
+});
+
+// NO CLICK
+no.onclick=()=>{
+  vibrate([40,60,40]);
+  document.getElementById("bin").style.opacity=1;
+  document.getElementById("cheat-text").style.opacity=1;
+  no.style.display="none";
+};
+
+// COUNTDOWN
 const cd=document.getElementById("countdown");
-const V=new Date("Feb 14, 2026").getTime();
+const V=new Date("Feb 14, 2026 00:00:00").getTime();
 setInterval(()=>{
-  cd.innerHTML=`⏳ ${Math.floor((V-Date.now())/86400000)} days to Valentine’s`;
+  const d=V-Date.now();
+  if(d<=0){ cd.innerHTML="❤️ It’s Today ❤️"; return; }
+  cd.innerHTML=
+    Math.floor(d/86400000)+"d "+
+    Math.floor(d%86400000/3600000)+"h "+
+    Math.floor(d%3600000/60000)+"m "+
+    Math.floor(d%60000/1000)+"s";
 },1000);
 
-// Letters logic
+// LETTER CONTENT
 function getLetter(){
-  const today=new Date();
-  const d=today.getDate();
-  const m=today.getMonth()+1;
-
-  const week={
-    7:"🌹 Happy Rose Day — consider this letter your rose.",
-    8:"💍 Happy Propose Day — still choosing you.",
-    9:"🍫 Happy Chocolate Day — sweet, slightly addictive.",
-    10:"🧸 Happy Teddy Day — soft hugs reserved for you.",
-    11:"🤞 Happy Promise Day — I’m not going anywhere.",
-    12:"🤗 Happy Hug Day — imagine this is a long one.",
-    13:"💋 Happy Kiss Day — this line was written too close.",
-    14:"❤️ Happy Valentine’s Day — this was always us."
-  };
-
-  if(m===2 && week[d]) return week[d];
-
-  const normal=[
-    "I hope you know — this page refreshes, my choice doesn’t.",
-    "You casually became my favorite habit.",
-    "Somehow you’re my calm and my chaos.",
-    "I didn’t plan this. I planned *us*.",
-    "If this were a bug, I’d never fix it."
+  const lines=[
+    "What kind of pie is Heerika?\nA certified cutie-pie.",
+    "Is Heerika Wi-Fi?\nBecause I connect instantly.",
+    "If Heerika smiled harder,\ngravity would panic.",
+    "Are you a keyboard?\nBecause Heerika is my type."
   ];
-
-  return normal[today.getDate()%normal.length];
+  return lines[Math.floor(Math.random()*lines.length)];
 }
 
-// Show letter
-function showLetter(){
-  document.getElementById("container").innerHTML=`
-    <div class="card">
-      <h2>One letter, just for you 💌</h2>
-      <div class="envelope" onclick="this.classList.add('open')">
-        <div class="letter">
-          <p>${getLetter()}</p>
-          <p style="margin-top:20px;font-size:14px">${cd.innerHTML}</p>
-          <p style="margin-top:16px">— Yours</p>
-        </div>
-      </div>
-      <p style="margin-top:18px;font-size:14px">(Tap the envelope)</p>
-    </div>`;
-}
+// YES
+document.getElementById("yes").onclick=()=>{
+  vibrate([30,40,30]);
+  document.getElementById("container").innerHTML=
+  `<div class="envelope-wrapper">
+    <div class="envelope">
+      <div class="envelope-flap" id="flap"><span>💌</span></div>
+      <div class="paper" id="paper"></div>
+    </div>
+  </div>`;
+
+  const flap=document.getElementById("flap");
+  const paper=document.getElementById("paper");
+  let open=false;
+
+  function openEnv(){
+    vibrate(20);
+    flap.style.transform="rotateX(180deg)";
+    paper.classList.add("open");
+    paper.innerHTML=
+      `<p>${getLetter()}</p>
+       <p style="margin-top:14px">${cd.innerHTML}</p>
+       <div class="signature">– KS</div>`;
+    open=true;
+  }
+
+  function closeEnv(){
+    vibrate(10);
+    paper.classList.remove("open");
+    flap.style.transform="rotateX(0deg)";
+    open=false;
+  }
+
+  setTimeout(openEnv,900);
+  paper.onclick=()=> open ? closeEnv() : openEnv();
+  document.getElementById("notif").onclick=openEnv;
+};
 </script>
 
 </body>
