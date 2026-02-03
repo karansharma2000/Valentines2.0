@@ -64,7 +64,10 @@ body{
   max-width:480px;
   border-radius:36px;
   text-align:center;
-  box-shadow:0 40px 120px rgba(0,0,0,.25);
+  box-shadow:var(--depth-2);
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.22,1,.36,1),
+           box-shadow .6s;
 }
 h1{color:#ff3f81;font-size:32px}
 p{font-size:18px;margin-top:10px}
