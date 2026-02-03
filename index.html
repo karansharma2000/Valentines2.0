@@ -3,29 +3,277 @@
 <head>
 <meta charset="UTF-8">
 <title>Be My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<link rel="stylesheet" href="css/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --pink:#ff3f81;
+  --bg1:#ffb3d9;
+  --bg2:#ffd6e8;
+  --d1:0 10px 30px rgba(0,0,0,.15);
+  --d2:0 30px 80px rgba(0,0,0,.25);
+  --d3:0 60px 140px rgba(0,0,0,.35);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  height:100vh;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+  overflow:hidden;
+}
+
+/* FADE */
+.fade{
+  position:fixed;
+  inset:0;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  transition:.8s;
+  z-index:50;
+}
+.fade.show{opacity:1}
+
+/* NOTIFICATION */
+.mail-notif{
+  position:fixed;
+  top:22px;
+  right:22px;
+  background:var(--pink);
+  color:white;
+  padding:14px 20px;
+  border-radius:999px;
+  font-size:16px;
+  font-weight:600;
+  box-shadow:var(--d2);
+  animation:shake 1.4s infinite, pulseNotif 2.8s ease-in-out infinite;
+  z-index:30;
+  cursor:pointer;
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(3px)}
+}
+@keyframes pulseNotif{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,63,129,.4)}
+  50%{box-shadow:0 0 0 12px rgba(255,63,129,0)}
+}
+
+/* CENTER CARD */
+.container{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.8s;
+}
+
+.card{
+  background:rgba(255,255,255,.96);
+  padding:52px;
+  width:90%;
+  max-width:480px;
+  border-radius:38px;
+  text-align:center;
+  box-shadow:var(--d2);
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.22,1,.36,1), box-shadow .6s;
+}
+
+@media (hover:hover){
+  .card:hover{
+    transform:translateY(-8px) scale(1.01);
+    box-shadow:var(--d3);
+  }
+}
+
+h1{color:var(--pink);font-size:32px}
+p{font-size:18px;margin-top:10px}
+#countdown{margin:20px 0;font-size:15px}
+
+/* BUTTONS */
+.buttons{position:relative;height:90px}
+
+button{
+  padding:16px 38px;
+  border-radius:999px;
+  font-size:17px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+
+button:active{
+  transform:translateY(2px) scale(.97);
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+#yes{
+  background:var(--pink);
+  color:white;
+  position:absolute;
+  left:0;
+}
+
+#no{
+  background:white;
+  border:2px solid var(--pink);
+  color:var(--pink);
+  position:absolute;
+  right:0;
+}
+
+/* BIN */
+.bin{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  font-size:44px;
+  opacity:0;
+  transition:.5s;
+  z-index:40;
+}
+
+.cheat-text{
+  position:fixed;
+  bottom:80px;
+  right:24px;
+  font-size:16px;
+  opacity:0;
+  transition:.5s;
+}
+
+/* ENVELOPE */
+.envelope-scene{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+}
+
+.hidden{display:none}
+
+.envelope{
+  width:320px;
+  height:210px;
+  position:relative;
+  perspective:1200px;
+  cursor:pointer;
+  animation:breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+
+.env-back{
+  background:#fff;
+  width:100%;
+  height:100%;
+  border-radius:16px;
+  position:absolute;
+  z-index:1;
+  box-shadow:var(--d2);
+}
+
+.env-letter{
+  position:absolute;
+  bottom:0;
+  left:12px;
+  width:296px;
+  height:0;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  transition:height .7s cubic-bezier(.22,1,.36,1), box-shadow .6s;
+  z-index:2;
+  text-align:center;
+  box-shadow:var(--d1);
+}
+
+.letter-open .env-letter{
+  height:260px;
+  box-shadow:var(--d3);
+}
+
+.letter-content{
+  padding:22px;
+  font-size:18px;
+}
+
+.signature{
+  font-family:'Great Vibes',cursive;
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.env-flap{
+  position:absolute;
+  top:0;
+  width:100%;
+  height:100%;
+  background:#ffe3ef;
+  clip-path:polygon(0 0,100% 0,50% 62%);
+  transform-origin:top center;
+  transform-style:preserve-3d;
+  transition:.6s;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.flap-emoji{
+  font-size:36px;
+  animation:heartbeat 1.6s infinite;
+}
+
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.18)}
+}
+
+.letter-open .env-flap{
+  transform:rotateX(160deg) translateZ(2px);
+}
+
+/* MOBILE */
+@media (max-width:768px){
+  .card{padding:38px;border-radius:30px}
+  h1{font-size:26px}
+  p{font-size:16px}
+  .envelope{width:270px;height:185px}
+  .env-letter{width:246px}
+  .mail-notif{font-size:14px}
+}
+</style>
 </head>
 
 <body>
 
 <div class="fade" id="fade"></div>
 
-<!-- Notification -->
-<div class="mail-notif" id="mailNotif">
-  💌 1 New Letter
-</div>
+<div class="mail-notif" id="mailNotif">💌 1 New Letter</div>
 
 <div class="container" id="container">
   <div class="card">
     <h1>HEYYYY HEERIKA JAIN 💖</h1>
     <p>Will you be my Valentine?</p>
     <div id="countdown"></div>
-
     <div class="buttons">
       <button id="yes">YESSSSS!! ❤️</button>
       <button id="no">No, I suck 😔</button>
@@ -33,24 +281,96 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
   </div>
 </div>
 
-<!-- Garbage -->
 <div class="bin" id="bin">🗑️</div>
 <div class="cheat-text" id="cheatText">don’t cheat 😤</div>
 
-<!-- Envelope Scene -->
-<div class="envelope-scene hidden" id="envelopeScene">
+<div class="envelope-scene hidden" id="scene">
   <div class="envelope" id="envelope">
     <div class="env-back"></div>
-    <div class="env-letter" id="letter">
+    <div class="env-letter">
       <div class="letter-content" id="letterContent"></div>
       <div class="signature">– KS</div>
     </div>
-    <div class="env-flap">
-      <span class="flap-emoji">💌</span>
-    </div>
+    <div class="env-flap"><span class="flap-emoji">💌</span></div>
   </div>
 </div>
 
-<script defer src="js/main.js"></script>
+<script>
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const bin=document.getElementById("bin");
+const cheat=document.getElementById("cheatText");
+const container=document.getElementById("container");
+const fade=document.getElementById("fade");
+const scene=document.getElementById("scene");
+const envelope=document.getElementById("envelope");
+const letterContent=document.getElementById("letterContent");
+const notif=document.getElementById("mailNotif");
+
+const V=new Date("Feb 14, 2026 00:00:00").getTime();
+setInterval(()=>{
+  const d=V-Date.now();
+  if(d<=0)return;
+  const days=Math.floor(d/86400000);
+  const h=Math.floor((d%86400000)/3600000);
+  const m=Math.floor((d%3600000)/60000);
+  const s=Math.floor((d%60000)/1000);
+  document.getElementById("countdown").innerHTML=
+  `⏳ ${days}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* RUNAWAY NO */
+document.addEventListener("mousemove",e=>{
+  const r=no.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
+  if(Math.hypot(dx,dy)<120){
+    no.style.transform=`translate(${-dx}px,${-dy}px)`;
+  }
+});
+
+/* NO CLICK */
+no.onclick=()=>{
+  bin.style.opacity=1;
+  cheat.style.opacity=1;
+  no.style.transition=".5s";
+  no.style.transform="translate(300px,300px) scale(0)";
+  if(navigator.vibrate) navigator.vibrate([80,40,80]);
+};
+
+/* LETTER TEXT */
+function getLetter(){
+  return "What kind of pie is Heerika?\nA cutie-pie. Obviously.";
+}
+
+/* OPEN EXPERIENCE */
+function openEnvelope(){
+  fade.classList.add("show");
+  setTimeout(()=>{
+    container.style.display="none";
+    scene.classList.remove("hidden");
+    fade.classList.remove("show");
+    letterContent.innerText=getLetter();
+    envelope.classList.add("letter-open");
+    if(navigator.vibrate) navigator.vibrate([30,40,30]);
+  },700);
+}
+
+yes.onclick=openEnvelope;
+notif.onclick=openEnvelope;
+
+/* TOGGLE LETTER */
+envelope.onclick=()=>{
+  envelope.classList.toggle("letter-open");
+  if(navigator.vibrate){
+    navigator.vibrate(
+      envelope.classList.contains("letter-open")
+      ? [20,40,20]
+      : 15
+    );
+  }
+};
+</script>
+
 </body>
 </html>
